@@ -1,6 +1,7 @@
 '''
 This file contain the Post class
 '''
+
 class Post:
     '''
     The post class

@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/home/lobo/Documents/gitProjects/courseProgress/pythonEnv/bin/python3.8",
+    "python.pythonPath": "pythonEnv\\Scripts\\python.exe",
     "python.testing.unittestArgs": [
         "-v",
         "-s",
