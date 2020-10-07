@@ -44,6 +44,8 @@ suggestion-mode=yes
 # active Python interpreter and may run arbitrary code.
 unsafe-load-any-extension=no
 
+# added to local project path for modules
+init-hook='import sys; sys.path.append("D:\Python\Course - Automation Testing Python")
 
 [MESSAGES CONTROL]
 
