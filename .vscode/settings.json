@@ -1,9 +1,10 @@
 {
     "python.pythonPath": "pythonEnv\\Scripts\\python.exe",
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
     "python.testing.unittestArgs": [
         "-v",
         "-s",
-        "./tests/",
+        "./tests/system/",
         "-p",
         "*_test.py"
     ],
