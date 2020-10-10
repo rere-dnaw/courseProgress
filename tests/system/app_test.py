@@ -12,20 +12,14 @@ from post import Post
 class AppTest(TestCase):
     """
     This class will test all the functions from the app.py file
-
-    Args:
-        TestCase ([type]): this is unittest module
     """
 
-    def test_menu_input(self):
+    def setUp(self):
         """
-        This will test the argument for input function
-        from the menu function
+        This method will be called before each test
         """
-
-        with patch("builtins.input") as mocked_input:
-            app.menu()
-            mocked_input.assert_called_with(app.MENU_PROMPT)
+        self.blog = Blog("Test title", "Test author")
+        app.blogs.update({"FirstBlog": self.blog})
 
     def test_menu_calls_print_blogs(self):
         """
@@ -34,7 +28,7 @@ class AppTest(TestCase):
         """
 
         with patch("app.print_blogs") as mocked_print_blogs:
-            with patch("builtins.input"):
+            with patch("builtins.input", return_value='q'):
                 app.menu()
                 mocked_print_blogs.assert_called_with()
 
@@ -45,12 +39,9 @@ class AppTest(TestCase):
         so the patch needs to be used on the print function
         """
 
-        blog = Blog("Test title", "Test author")
-        app.blogs.update({"FirstBlog": blog})
-
         with patch("builtins.print") as mocked_print:
             app.print_blogs()
-            mocked_print.assert_called_with("- Title: Test title, Author: Test author (0 posts)")
+            mocked_print.assert_called_with("- Title: Test, Author: Test Author (0 posts)")
 
         # this works only when func return something
         # See: https://www.youtube.com/watch?v=WFRljVPHrkE
@@ -76,13 +67,11 @@ class AppTest(TestCase):
         """
         This is test for read_blog function
         """
-        blog = Blog("Test title", "Test author")
-        app.blogs.update({"Test title": blog})
 
-        with patch('builtins.input', return_value='Test title'):
+        with patch('builtins.input', return_value='FirstBlog'):
             with patch('app.print_posts') as mocked_print_posts:
                 app.read_blog()
-                mocked_print_posts.assert_called_with(blog)
+                mocked_print_posts.assert_called_with(self.blog)
 
     def test_print_posts(self):
         """
@@ -113,3 +102,61 @@ This is my first post
         with patch('builtins.print') as mocked_print:
             app.print_post(post)
             mocked_print.assert_called_with(expected_print)
+
+    def test_create_post(self):
+        """
+        This is a test for create post function
+        """
+
+        with patch('builtins.input') as mocked_input:
+            mocked_input.side_effect = ('FirstBlog', 'My post title', 'My post content')
+            app.create_post()
+
+            self.assertEqual(self.blog.posts[0].title, 'My post title')
+            self.assertEqual(self.blog.posts[0].content, 'My post content')
+
+    def test_menu_selection_c(self):
+        """
+        This is a test for selection option 'c'
+        """
+
+        with patch('builtins.input') as mocked_input:
+            mocked_input.side_effect = ('c', 'The blog title', "The blog's author", 'q')
+            app.menu()
+            self.assertIsNotNone(app.blogs['The blog title'])
+
+    def test_menu_selection_c(self):
+        """
+        This is a test for selection option 'l'
+        """
+
+        with patch('builtins.input') as mocked_input:
+            mocked_input.side_effect = ('l', 'q')
+            with patch('app.print_blogs') as mocked_print_blogs:
+                app.menu()
+                mocked_print_blogs.assert_called()
+
+    def test_menu_selection_r(self):
+        """
+        This is a test for selection option 'r'
+        """
+
+        with patch('builtins.input') as mocked_input:
+            mocked_input.side_effect = ('r', 'FirstBlog', 'q')
+            with patch('app.read_blog') as mocked_read_blog:
+                app.menu()
+                mocked_read_blog.assert_called()
+
+    def test_menu_selection_p(self):
+        """
+        This method will test an option "p" from
+        the selection menu
+        """
+
+        with patch('builtins.input') as mocked_input:
+            mocked_input.side_effect = ('p', 'FirstBlog', 'Post titleX', 'Post contentX', 'q')
+            with patch('app.create_post') as mocked_create_post:
+                app.menu()
+                mocked_create_post.assert_called()
+
+
