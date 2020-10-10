@@ -91,11 +91,10 @@ def create_post():
     this function will create a post
     """
     blog_name = input(READ_BLOG_PROMPT)
+    title = input('Enter the post title: ')
+    content = input('Enter the post content: ')
 
-    for key, blog in blogs.items():
-        if key == blog_name:
-            blog.create_post('Post title', 'Post content')
-
+    blog = blogs[blog_name].create_post(title, content)
 
 def print_blogs():
     """

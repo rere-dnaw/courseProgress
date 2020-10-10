@@ -1,18 +1,20 @@
-'''
-This file sontain unit tests for blog.py file
-'''
+"""
+This file contain unit tests for blog.py file
+"""
 
 from unittest import TestCase
 from blog import Blog
 
+
 class BlogTest(TestCase):
-    '''
+    """
     Unit tests for blog class
-    '''
+    """
+
     def test_create_blog(self):
-        '''
+        """
         This is test for creating new objects
-        '''
+        """
         b_1 = Blog('Test title', 'Test author')
         self.assertEqual(b_1.title, 'Test title')
         self.assertEqual(b_1.author, 'Test author')
@@ -20,9 +22,9 @@ class BlogTest(TestCase):
         self.assertEqual(len(b_1.posts), len([]))
 
     def test_repr(self):
-        '''
+        """
         Test for __repr__ method
-        '''
+        """
         b_1 = Blog('Test title', 'Test author')
         b_1.posts = ['One']
 
@@ -33,9 +35,9 @@ class BlogTest(TestCase):
         self.assertEqual(b_2.__repr__(), "Test title2 by Test author2 (2 posts)")
 
     def test_str(self):
-        '''
-        This is tyest for string which is return by print method
-        '''
+        """
+        This is test for string which is return by print method
+        """
         b_1 = Blog('Test title', 'Test author')
         b_1.posts = ['One']
 
